@@ -60,6 +60,7 @@ class Similarities:
  
     return nominator / denominator
 
+  # Gets the top-similarity matches for the given user
   def topMatches(self, person, similarity, number_of_matches = 5):
     users = self.db.get_all_user_ids()
 
