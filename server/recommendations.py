@@ -1,7 +1,10 @@
+# Class to get recommendations for users
+
 class Recommendations:
   def __init__(self, db):
     self.db = db
 
+  # Returns the recommendations for the given user using the given similarity-measure
   def getRecommendations(self, person, similarity):
     totals = {}
     simSums = {}

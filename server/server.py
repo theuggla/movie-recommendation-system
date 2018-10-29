@@ -1,3 +1,4 @@
+# Server starting point
 
 # Flask imports
 from flask import Flask, request
@@ -18,20 +19,26 @@ db = DB(db_path)
 sims = Similarities(db)
 recs = Recommendations(db)
 
-class Ratings(Resource):
-    def get(self, user_id):
-        result = {'pearson': sims.topMatches(user_id, sims.pearson), 'euclidian': sims.topMatches(user_id, sims.euclidean)}
+# Get the top matching users for the given user
+class Matches(Resource):
+    def get(self, similarity_measure, user_id):
+        similarity = sims.pearson if (similarity_measure == 'pearson') else sims.euclidean
+        result = {'data': sims.topMatches(user_id, similarity)}
         return jsonify(result)
 
+# Get movie recommendations for the given user
 class Recs(Resource):
-    def get(self, user_id):
-        result = {'pearson': recs.getRecommendations(user_id, sims.pearson), 'euclidian': recs.getRecommendations(user_id, sims.euclidean)}
+    def get(self, similarity_measure, user_id):
+        similarity = sims.pearson if (similarity_measure == 'pearson') else sims.euclidean
+        result = {'data': recs.getRecommendations(user_id, similarity)}
         return jsonify(result)
 
-api.add_resource(Ratings, '/ratings/<user_id>') # Route_1
-api.add_resource(Recs, '/recommendations/<user_id>') # Route_2
+# Add resources
+api.add_resource(Matches, '/matches/<similarity_measure>/<user_id>') # Route_1
+api.add_resource(Recs, '/recommendations/<similarity_measure>/<user_id>') # Route_2
 
 
+# Start server
 if __name__ == '__main__':
      app.run(port='5002')
      
