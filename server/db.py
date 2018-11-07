@@ -17,6 +17,13 @@ class DB:
     result = [dict(zip(tuple (query.keys()), i)) for i in query.cursor]
     return result
 
+  # Returns all users
+  def get_all_users(self):
+    conn = self.db_connect.connect()
+    query = conn.execute("select * from users")
+    result = [dict(zip(tuple (query.keys()), i)) for i in query.cursor]
+    return result
+
   # Returns all user ids
   def get_all_user_ids(self):
     conn = self.db_connect.connect()
