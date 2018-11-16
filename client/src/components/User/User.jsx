@@ -18,7 +18,6 @@ export class User extends React.Component {
 
     return (
       <Card className='user'>
-        <p className='user__id'>#{user.UserID}</p>
         <Link to={`user-${user.UserID}`} className='user__header'>
           <CardHeader
             title={user.UserName}
