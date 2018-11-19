@@ -67,8 +67,6 @@ class Similarities:
     scores = [(similarity(person, other), self.db.get_name_from_id(other))
               for other in users if other != int(person)]
 
-    print scores
-
     scores.sort( )
     scores.reverse( )
     return scores[0:number_of_matches]
