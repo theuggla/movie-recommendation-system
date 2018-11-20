@@ -52,7 +52,7 @@ class KMeansCluster:
     i = 0
     no_reassignments = False
 
-    while (no_reassignments == False & (number_of_iterations == False | i < number_of_iterations)):
+    while (no_reassignments == False and (number_of_iterations == False or i < number_of_iterations)):
       print "Iteration %d" % i
       old_assignments = {}
       
