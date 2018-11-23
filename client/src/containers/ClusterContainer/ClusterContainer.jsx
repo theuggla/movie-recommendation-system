@@ -34,12 +34,12 @@ export class ClusterContainer extends React.Component {
     super(props)
 
     this.state = {
-      hierarchDisplay: false,
-      hclustersrc: false,
-      kmeansDisplayFull: false,
-      kmeansclusterfull: false,
-      kmeansDisplayItaration: false,
-      kmeansclusteritative: false,
+      hierarchicalDisplay: false,
+      hierarchical: false,
+      kmeansDisplay: false,
+      kmeans: false,
+      kmeansiterativeDisplay: false,
+      kmeansiterative: false,
       iterations: '10'
     }
   }
@@ -50,45 +50,32 @@ export class ClusterContainer extends React.Component {
   render () {
     return (
       <div className='display'>
-        <div className='hierarchical'>
         <h2>Hierarchical Clustering</h2>
-          <Button label="See Cluster" onClick={() => {
-            this.getHClust().then((result) => {
-              this.setState({hclustersrc: result.data.link})
-              this.setState({ hierarchDisplay: !this.state.hierarchDisplay })
-            })
-          }}>
-          </Button>
-          <HierarchicalDisplay src={this.state.hclustersrc} visible={this.state.hierarchDisplay}/>
-        </div>
+          <Button 
+            label="See Cluster"
+            onClick={() => this.updateCluster('hierarchical', !this.state.hierarchicalDisplay)}
+          />
+          <HierarchicalDisplay src={this.state.hierarchical} visible={this.state.hierarchicalDisplay}/>
+
         <h2>K-means clustering</h2>
-        <Button label="Show clusters resulting from clustering until no reassignments are made" onClick={() => {
-            this.getKClust().then((result) => {
-              this.setState({kmeansclusterfull: result.data})
-              this.setState({ kmeansDisplayFull: !this.state.kmeansDisplayFull })
-            })
-          }}>
-          </Button>
-          <KMeansDisplay clusters={this.state.kmeansclusterfull} visible={this.state.kmeansDisplayFull}/>
+          <Button 
+            label="Show clusters resulting from clustering until no reassignments are made" 
+            onClick={() => {this.updateCluster('kmeans', !this.state.kmeansDisplay)}}
+          />
+          <KMeansDisplay clusters={this.state.kmeans} visible={this.state.kmeansDisplay}/>
+          
           <div className="select-iterations">
-          <Button className="iteration-button" label="Show clusters with set number of iterations:" onClick={() => {
-                this.getKClust(this.state.iterations).then((result) => {
-                  this.setState({kmeansclusteritative: result.data})
-                  this.setState({ kmeansDisplayItaration: !this.state.kmeansDisplayItaration })
-                })
-              }}>
-            </Button>
+            <Button 
+              label="Show clusters with set number of iterations:" 
+              onClick={() => {this.updateCluster('kmeans', !this.state.kmeansiterativeDisplay, this.state.iterations)}}
+            />
             <DropDownMenu
               label="Iterations"
               value={this.state.iterations}
               onChange={(event, key, value) => {
                 this.handleChange('iterations')(value)
-                this.getKClust(this.state.iterations).then((result) => {
-                  this.setState({kmeansclusteritative: result.data})
-                  this.setState({ kmeansDisplayItaration: true })
-                })
+                this.updateCluster('kmeans', true, this.state.iterations)
               }}
-              className="select-iterations-drop"
               underlineStyle={{display: 'none'}}
             >
               {iterations.map(option => (
@@ -96,7 +83,7 @@ export class ClusterContainer extends React.Component {
               ))}
             </DropDownMenu>
           </div>
-          <KMeansDisplay clusters={this.state.kmeansclusteritative} visible={this.state.kmeansDisplayItaration}/>
+          <KMeansDisplay clusters={this.state.kmeansiterative} visible={this.state.kmeansiterativeDisplay}/>
       </div>
     )
   }
@@ -106,6 +93,7 @@ export class ClusterContainer extends React.Component {
    */
   handleChange (name) {
     return (value) => {
+      console.log('setting state ' + name + ' to ' + value)
       this.setState({
         [name]: value,
       });
@@ -113,24 +101,23 @@ export class ClusterContainer extends React.Component {
   }
 
   /**
-   * Retrieves a link to a hierarchical clustering of the blogposts.
+   * Gets cluster data from the server and updates state.
    */
-  getHClust () {
-    return new Promise((resolve, reject) => {
-      axios.get('http://127.0.0.1:5002/clusters/hierarchical')
-      .then((result) => {
-        resolve(result)
-      })
+  updateCluster (clustername, visible, iterations) {
+    this.getClusters(clustername, iterations).then((result) => {
+      clustername = iterations ? clustername + 'iterative' : clustername
+      this.handleChange(clustername)(result.data)
+      this.handleChange(clustername + 'Display')(visible)
     })
   }
 
   /**
-   * Retrieves a list of k-means clustering of the blogposts.
+   * Retrieves result for clustering of the blogposts.
    */
-  getKClust (iterations) {
+  getClusters (type, iterations) {
+    iterations = (type == 'kmeans') ? (iterations ? iterations : 'full') : ''
     return new Promise((resolve, reject) => {
-      iterations = iterations ? iterations : 'full'
-      axios.get('http://127.0.0.1:5002/clusters/kmeans/' + iterations)
+      axios.get('http://127.0.0.1:5002/clusters/' + type + '/' + iterations)
       .then((result) => {
         resolve(result)
       })

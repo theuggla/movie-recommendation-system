@@ -18,14 +18,7 @@ app = Flask(__name__, static_url_path = '/server')
 api = Api(app)
 CORS(app)
 
-# Root
-class Root(Resource):
-    def get(self):
-        filename = './blogdata.txt'
-        result = {'message': Util.readfile(filename)}
-        return jsonify(result)
-
-# Get the clusters
+# Get the clusters - k-means
 class KMeansClusters(Resource):
     def get(self, iterations):
         filename = './blogdata.txt'
@@ -39,7 +32,7 @@ class KMeansClusters(Resource):
             clusters = KMeansCluster.run_assignments(data, 5, number_of_iterations)
             return jsonify([[assignment['blog'] for assignment in cluster.assignments] for cluster in clusters])
 
-# Get the clusters
+# Get the clusters - hierarchical
 class HierchClusters(Resource):
     def get(self):
         filename = './blogdata.txt'
@@ -48,7 +41,7 @@ class HierchClusters(Resource):
         cluster = HierchCluster.cluster(data)
         image_link = Print.draw_dendrogram(cluster, "cluster.jpg")
 
-        return jsonify({'link': "http://localhost:5002/" + image_link})
+        return jsonify("http://localhost:5002/" + image_link)
 
 # Static image host
 class ServeStatic(Resource):
@@ -56,10 +49,9 @@ class ServeStatic(Resource):
         return send_from_directory('img', path)
 
 # Add resources
-api.add_resource(Root, '/') # Route_1
-api.add_resource(KMeansClusters, '/clusters/kmeans/<iterations>') # Route_2
-api.add_resource(HierchClusters, '/clusters/hierarchical') # Route_3
-api.add_resource(ServeStatic, '/img/<path>') # Route_4
+api.add_resource(KMeansClusters, '/clusters/kmeans/<iterations>') # Route_1
+api.add_resource(HierchClusters, '/clusters/hierarchical/') # Route_2
+api.add_resource(ServeStatic, '/img/<path>') # Route_3
 
 
 # Start server
