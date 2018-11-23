@@ -5,32 +5,12 @@ import * as React from 'react'
 import * as axios from 'axios'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
-import { ClusterDisplay } from '../../components/ClusterDisplay/ClusterDisplay.jsx'
+import { ClusterContainer } from '../ClusterContainer/ClusterContainer.jsx'
 
 /**
  * App class
  */
 export class App extends React.Component {
-  constructor (props) {
-    super(props)
-  }
-
-  /**
-   * componentDidMount
-   */
-  componentDidMount () {
-
-  }
-
-  /**
-   * componentDidUpdate
-   */
-  componentDidUpdate (prevProps) {
-    if (prevProps !== this.props) {
-
-    }
-  }
-
   /**
    * The render method
    */
@@ -39,9 +19,10 @@ export class App extends React.Component {
       <div className='app__wrapper'>
         <div className='app__sidebar' />
         <div className='app__content'>
+          <h1>Clustering</h1>
           <Router>
             <Switch>
-              <Route path='/' component={ClusterDisplay} />
+              <Route path='/' component={ClusterContainer} />
             </Switch>
           </Router>
         </div>

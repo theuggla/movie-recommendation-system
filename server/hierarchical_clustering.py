@@ -25,7 +25,6 @@ class HierchCluster:
 
     while len(clusters) > 1:
       print "Clusters: %d" % len(clusters)
-      print current_cluster_id
       
       lowest_pair = (0, 1)
       closest_distance = Util.pearson(clusters[0].data, clusters[1].data)

@@ -6,24 +6,6 @@ from PIL import Image, ImageDraw
 class Print:
 
   @staticmethod
-  def print_clust(cluster, n = 0):
-    for i in range(n):
-      print ' '
-    
-    if cluster.id < 0:
-      print '-'
-    else:
-      if cluster.name != None:
-        print cluster.name
-      else:
-        print cluster.id
-    
-    if cluster.left != None:
-      Print.print_clust(cluster.left, n = n + 1) 
-    if cluster.right != None:
-      Print.print_clust(cluster.right, n = n +1)
-
-  @staticmethod
   def get_height(cluster):
     if (cluster.left == None and cluster.right == None):
       return 1
@@ -57,7 +39,6 @@ class Print:
 
   @staticmethod
   def draw_node(draw, cluster, x, y, scaling):
-    print cluster.id
     if cluster.id < 0:
       h1 = Print.get_height(cluster.left) * 20
       h2 = Print.get_height(cluster.right) * 20
@@ -74,5 +55,4 @@ class Print:
       Print.draw_node(draw, cluster.left, x + line_length, top + h1 / 2, scaling)
       Print.draw_node(draw, cluster.right, x + line_length, bottom - h2 / 2, scaling)
     else:
-      print cluster.name
       draw.text((x + 5, y - 7), cluster.name, (0, 0, 0))
