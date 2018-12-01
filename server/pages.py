@@ -20,10 +20,19 @@ class PageDB:
       self.word_to_id[word] = id
       return id
   
-  # Returns a list of all pages that has the given word in them
-  def search(self, word):
-    results = list(filter(lambda page: self.get_id_for_word(word) in page.words, self.pages))
+  # Returns a list of all pages that has all of the given words in them
+  def search(self, words):
+    result_lists = [(filter(lambda page: self.get_id_for_word(word) in page.words, self.pages)) for word in words]
+    results = set(result_lists.pop())
+    
+    for result in result_lists:
+      results = results.intersection(set(result))
+
     return [{'url': page.url} for page in results]
+
+  # Ranks the results using the word frequency algorithm
+  def rank_word_frequency():
+    
 
 
 

@@ -23,7 +23,7 @@ Util.index_pages('./server/data/Words/Programming', pageDB)
 class Search(Resource):
     def get(self, rank_type):
         search_term = request.query_string
-        results = pageDB.search(search_term)
+        results = pageDB.search(search_term.split('+'))
 
         return(jsonify(results))
 
