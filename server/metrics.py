@@ -32,7 +32,7 @@ class Metrics:
 
     return result
 
-  # Returns the the word frequency score for the given page and query
+  # Returns the word frequency score for the given page and query
   def get_word_frequency_score(self, page, query):
     score = 0
 
@@ -41,6 +41,22 @@ class Metrics:
       for word in page.words:
         if word == word_id:
           score += 1
+
+    return float(score)
+
+  # Returns the document location score for the given page and query
+  def get_document_location_score(self, page, query):
+    score = 0
+
+    for part in query:
+      word_id = self.db.get_id_for_word(part)
+      word_found = False
+      for index, word in enumerate(page.words):
+        if word == word_id:
+          score += index
+          word_found = True
+      if word_found == False:
+        score += 100000
 
     return float(score)
 

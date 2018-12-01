@@ -9,8 +9,12 @@ import { Search } from '../../components/Search/Search.jsx'
 let ranks = [
   {
     name: 'single word search - word frequency metric',
-    slug: 'sws-wfm'
-  }
+    slug: 'wfm'
+  },
+  {
+    name: 'multiple word search - word frequency and document location metrics',
+    slug: 'wfm-dlm'
+  },
 ]
 
 export class SearchContainer extends React.Component {

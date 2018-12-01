@@ -30,7 +30,13 @@ class Search(Resource):
         if len(results) == 0:
             return (jsonify([]))
         else:
-            metrics_to_use = [{'metric_function': metrics.get_word_frequency_score, 'weight': 1.0, 'prefer_low': False}]
+            metrics_to_use = []
+            
+            if 'wfm' in rank_type:
+                metrics_to_use.append({'metric_function': metrics.get_word_frequency_score, 'weight': 1.0, 'prefer_low': False})
+            if 'dlm' in rank_type:
+                metrics_to_use.append({'metric_function': metrics.get_document_location_score, 'weight': 0.8, 'prefer_low': True})
+            
             ranked_results = metrics.rank(results, query, metrics_to_use)
             return (jsonify(ranked_results))
 
