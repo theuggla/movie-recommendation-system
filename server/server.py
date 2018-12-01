@@ -10,6 +10,7 @@ from flask_cors import CORS
 # Local imports
 from utils import Util
 from pages import PageDB
+from metrics import Metrics
 
 # Global definitions
 app = Flask(__name__, static_url_path = '/server')
@@ -22,10 +23,12 @@ Util.index_pages('./server/data/Words/Programming', pageDB)
 # Search for a single word in the list
 class Search(Resource):
     def get(self, rank_type):
-        search_term = request.query_string
-        results = pageDB.search(search_term.split('+'))
+        query = request.query_string.split('+')
+        results = pageDB.search(query)
+        metrics = {'metric_function': Metrics.get_word_frequency_score, 'weight': 1.0, 'prefer_low': False}
+        ranked_results = Metrics.rank(results, query, metrics)
 
-        return(jsonify(results))
+        return(jsonify(ranked_results))
 
 # Add resources
 api.add_resource(Search, '/search/<rank_type>') # Route_1
