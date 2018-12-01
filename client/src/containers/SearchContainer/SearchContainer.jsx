@@ -59,9 +59,10 @@ export class SearchContainer extends React.Component {
   /**
    * Retrieves result for the search term.
    */
-  getSearchResults (rank, term) {
+  getSearchResults (rank, terms) {
+    let query = Array.isArray(terms) ? terms.join('+') : terms
     return new Promise((resolve, reject) => {
-      axios.get('http://127.0.0.1:5002/search/' + rank + '?' + term)
+      axios.get('http://127.0.0.1:5002/search/' + rank + '?' + query)
       .then((result) => {
         resolve(result)
       })
