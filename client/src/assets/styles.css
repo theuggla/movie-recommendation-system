@@ -3,6 +3,15 @@ body {
   margin: 0 auto;
   padding-top: 5em;
   text-align: center;
+  font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+  font-variant: small-caps;
+}
+
+h2 {
+  padding: 1em;
 }
 
 a {

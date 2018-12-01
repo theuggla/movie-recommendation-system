@@ -19,16 +19,20 @@ CORS(app)
 pageDB = PageDB()
 Util.index_pages('./server/data/Words/Games', pageDB)
 Util.index_pages('./server/data/Words/Programming', pageDB)
+metrics = Metrics(pageDB)
 
 # Search for a single word in the list
 class Search(Resource):
     def get(self, rank_type):
         query = request.query_string.split('+')
         results = pageDB.search(query)
-        metrics = {'metric_function': Metrics.get_word_frequency_score, 'weight': 1.0, 'prefer_low': False}
-        ranked_results = Metrics.rank(results, query, metrics)
 
-        return(jsonify(ranked_results))
+        if len(results) == 0:
+            return (jsonify([]))
+        else:
+            metrics_to_use = [{'metric_function': metrics.get_word_frequency_score, 'weight': 1.0, 'prefer_low': False}]
+            ranked_results = metrics.rank(results, query, metrics_to_use)
+            return (jsonify(ranked_results))
 
 # Add resources
 api.add_resource(Search, '/search/<rank_type>') # Route_1
