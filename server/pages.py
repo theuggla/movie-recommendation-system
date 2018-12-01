@@ -28,13 +28,7 @@ class PageDB:
     for result in result_lists:
       results = results.intersection(set(result))
 
-    return [{'url': page.url} for page in results]
-
-  # Ranks the results using the word frequency algorithm
-  def rank_word_frequency():
-    
-
-
+    return list(results)
 
 class Page:
   
