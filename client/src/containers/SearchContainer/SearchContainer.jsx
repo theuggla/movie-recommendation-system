@@ -3,20 +3,25 @@
  */
 import * as React from 'react'
 
-import { FlatButton as Button, TextField, Paper, Divider } from 'material-ui'
-import { List } from 'material-ui/List'
 import * as axios from 'axios'
-import { SearchResultDisplay } from '../../components/SearchResultDisplay/SearchResultDisplay.jsx'
+import { Search } from '../../components/Search/Search.jsx'
+
+let ranks = [
+  {
+    name: 'single word search - word frequency metric',
+    slug: 'sws-wfm'
+  }
+]
 
 export class SearchContainer extends React.Component {
 
   constructor (props) {
     super(props)
 
-    this.state = {
-      term: '',
-      results: []
-    }
+    this.state = {}
+
+    this.handleChange = this.handleChange.bind(this)
+    this.getSearchResults = this.getSearchResults.bind(this)
   }
 
   /**
@@ -25,20 +30,17 @@ export class SearchContainer extends React.Component {
   render () {
     return (
       <div className='display'>
-        <h2>Search FFS</h2>
-          <TextField
-            floatingLabelText='Search query'
-            onChange={this.handleChange('term')}
-            value={this.state.term}
+        {ranks.map((rank, i) => (
+           <Search
+            key = {i}
+            header = {rank.name}
+            rank = {rank.slug}
+            term = {this.state['term-' + rank.slug]}
+            results = {this.state['results-' + rank.slug]}
+            handleChange = {this.handleChange} 
+            getSearchResults = {this.getSearchResults}
           />
-          <Button
-            label='Search'
-            onClick={() => {this.getSearchResults(this.state.term).then((result) => this.handleChange('results')(null, result.data))}}
-          />
-        <h2>Search Results</h2>
-        { this.state.results.length > 0 && <Paper zDepth={2}>
-          <SearchResultDisplay pages={this.state.results.length > 5 ? this.state.results.slice(0, 5) : this.state.results} />
-        </Paper> }
+        ))}
       </div>
     )
   }
@@ -57,9 +59,9 @@ export class SearchContainer extends React.Component {
   /**
    * Retrieves result for the search term.
    */
-  getSearchResults (term) {
+  getSearchResults (rank, term) {
     return new Promise((resolve, reject) => {
-      axios.get('http://127.0.0.1:5002/search/' + term)
+      axios.get('http://127.0.0.1:5002/search/' + rank + '?' + term)
       .then((result) => {
         resolve(result)
       })

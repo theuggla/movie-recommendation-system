@@ -21,13 +21,14 @@ Util.index_pages('./server/data/Words/Programming', pageDB)
 
 # Search for a single word in the list
 class Search(Resource):
-    def get(self, search_term):
+    def get(self, rank_type):
+        search_term = request.query_string
         results = pageDB.search(search_term)
 
         return(jsonify(results))
 
 # Add resources
-api.add_resource(Search, '/search/<search_term>') # Route_1
+api.add_resource(Search, '/search/<rank_type>') # Route_1
 
 
 # Start server
