@@ -13,12 +13,14 @@ from pages import PageDB
 from metrics import Metrics
 
 # Global definitions
+game_directories = {'articles': './server/data/Words/Games', 'links': './server/data/Links/Games'}
+programming_directories = {'articles': './server/data/Words/Programming', 'links': './server/data/Links/Programming'}
 app = Flask(__name__, static_url_path = '/server')
 api = Api(app)
 CORS(app)
 pageDB = PageDB()
-Util.index_pages('./server/data/Words/Games', pageDB)
-Util.index_pages('./server/data/Words/Programming', pageDB)
+Util.index_pages(game_directories, pageDB)
+Util.index_pages(programming_directories, pageDB)
 metrics = Metrics(pageDB)
 
 # Search for a single word in the list
