@@ -1,0 +1,10 @@
+body {
+  max-width: 80%;
+  margin: 0 auto;
+  padding-top: 5em;
+  text-align: center;
+}
+
+a {
+  color: darkslategrey;
+}
