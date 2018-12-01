@@ -14,4 +14,4 @@ class Util:
         with open(directory_paths['links'] + '/' + filename) as links:
           words = [word for line in article for word in line.split()]
           links = [link.rstrip() for link in links]
-          pageDB.add_page('wiki/' + filename, words, links)
+          pageDB.add_page('/wiki/' + filename, words, links)

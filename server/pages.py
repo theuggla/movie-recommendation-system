@@ -32,7 +32,8 @@ class PageDB:
 
   # Calculates the page rank for each page over the given number of iterations
   def calculate_page_rank(self, iterations):
-    for _ in range(iterations):
+    for i in range(iterations):
+      print 'PageRank calculation: iteration ' + str(i)
       for page in self.pages:
         rank = 0
         for other_page in self.pages:

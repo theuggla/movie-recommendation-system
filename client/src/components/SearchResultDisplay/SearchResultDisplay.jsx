@@ -29,7 +29,7 @@ export class SearchResultDisplay extends React.Component {
         </TableRow>
       </TableHeader>
       <TableBody displayRowCheckbox={false}>
-        {this.props.pages.map((page, i) => <React.Fragment key={i}><TableRow><TableRowColumn><a href={'http://en.wikipedia.org/' + page.url}>{page.url}</a></TableRowColumn><TableRowColumn>{page.score}</TableRowColumn></TableRow></React.Fragment>)}
+        {this.props.pages.map((page, i) => <React.Fragment key={i}><TableRow><TableRowColumn><a href={'http://en.wikipedia.org' + page.url}>{page.url}</a></TableRowColumn><TableRowColumn>{page.score}</TableRowColumn></TableRow></React.Fragment>)}
       </TableBody>
     </Table>
     )

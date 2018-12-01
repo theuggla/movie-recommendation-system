@@ -15,6 +15,10 @@ let ranks = [
     name: 'multiple word search - word frequency and document location metrics',
     slug: 'wfm-dlm'
   },
+  {
+    name: 'multiple word search - word frequency, document location and page rank metrics',
+    slug: 'wfm-dlm-prm'
+  },
 ]
 
 export class SearchContainer extends React.Component {

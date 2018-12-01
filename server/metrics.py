@@ -7,7 +7,7 @@ class Metrics:
 
   # Ranks the pages using the given metrics and returns {url: url, score: score} for each page.
   # Query should be a list of words
-  # Metrics should be a list of objects in the form of {metric_function: function, weight: number, prefer_low: boolean}
+  # Metrics should be a list of objects in the form of {metric_function: function, weight: number, type: link|content, (optional)prefer_low: boolean}
   def rank(self, pages, query, metrics):
     result = list()
     scores = {}
@@ -16,11 +16,14 @@ class Metrics:
       scores[m_idx] = {}
       for p_idx, page in enumerate(pages):
         scores[m_idx][p_idx] = 0
-        score = metric['metric_function'](page, query)
+        if metric['type'] == 'content':
+          score = metric['metric_function'](page, query)
+        else:
+          score = metric['metric_function'](page)
         scores[m_idx][p_idx] = score
 
     for m_idx, metric in enumerate(metrics):
-      scores[m_idx] = self.normalize(scores[m_idx], metric['prefer_low'])
+      scores[m_idx] = self.normalize(scores[m_idx], metric.get('prefer_low'))
 
     for p_idx, page in enumerate(pages):
       score = 0
@@ -60,8 +63,13 @@ class Metrics:
 
     return float(score)
 
+  # Returns the page rank score for the given page
+  def get_page_rank_score(self, page):
+    score = page.page_rank
+    return float(score)
+
   # Normalizes a list of scores so that the highest score becomes 1 and the rest are transformed to reflect that
-  def normalize(self, scores, low_is_better):
+  def normalize(self, scores, low_is_better = False):
     if len(scores) == 0:
       return scores
 

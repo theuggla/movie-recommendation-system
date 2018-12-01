@@ -12,7 +12,7 @@ from utils import Util
 from pages import PageDB
 from metrics import Metrics
 
-# Global definitions
+# Global definitions and inits
 game_directories = {'articles': './server/data/Words/Games', 'links': './server/data/Links/Games'}
 programming_directories = {'articles': './server/data/Words/Programming', 'links': './server/data/Links/Programming'}
 app = Flask(__name__, static_url_path = '/server')
@@ -22,6 +22,7 @@ pageDB = PageDB()
 Util.index_pages(game_directories, pageDB)
 Util.index_pages(programming_directories, pageDB)
 metrics = Metrics(pageDB)
+pageDB.calculate_page_rank(20)
 
 # Search for a single word in the list
 class Search(Resource):
@@ -35,9 +36,11 @@ class Search(Resource):
             metrics_to_use = []
             
             if 'wfm' in rank_type:
-                metrics_to_use.append({'metric_function': metrics.get_word_frequency_score, 'weight': 1.0, 'prefer_low': False})
+                metrics_to_use.append({'metric_function': metrics.get_word_frequency_score, 'weight': 1.0, 'type': 'content'})
             if 'dlm' in rank_type:
-                metrics_to_use.append({'metric_function': metrics.get_document_location_score, 'weight': 0.8, 'prefer_low': True})
+                metrics_to_use.append({'metric_function': metrics.get_document_location_score, 'weight': 0.8, 'type': 'content', 'prefer_low': True})
+            if 'prm' in rank_type:
+                metrics_to_use.append({'metric_function': metrics.get_page_rank_score, 'weight': 0.5, 'type': 'link'})
             
             ranked_results = metrics.rank(results, query, metrics_to_use)
             return (jsonify(ranked_results))
