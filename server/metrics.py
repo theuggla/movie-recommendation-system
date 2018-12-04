@@ -53,11 +53,14 @@ class Metrics:
 
     for part in query:
       word_id = self.db.get_id_for_word(part)
+      
       word_found = False
       for index, word in enumerate(page.words):
-        if word == word_id:
-          score += index
-          word_found = True
+          if word == word_id:
+            score += index
+            word_found = True
+            break
+      
       if word_found == False:
         score += 100000
 
