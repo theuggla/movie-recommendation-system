@@ -23,8 +23,12 @@ export class Search extends React.Component {
           onChange={this.props.handleChange('term-' + this.props.rank)}
         />
         <Button
-          label='Search'
-          onClick={() => {this.props.getSearchResults(this.props.rank, this.props.term).then((result) => this.props.handleChange('results-' + this.props.rank)(null, result.data))}}
+          label='Search inclusive'
+          onClick={() => {this.props.getSearchResults(this.props.rank, this.props.term, true).then((result) => this.props.handleChange('results-' + this.props.rank)(null, result.data))}}
+        />
+        <Button
+          label='Search exclusive'
+          onClick={() => {this.props.getSearchResults(this.props.rank, this.props.term, false).then((result) => this.props.handleChange('results-' + this.props.rank)(null, result.data))}}
         />
       { this.props.results && (this.props.results.length > 0 ? <Paper zDepth={2}>
         <SearchResultDisplay pages={this.props.results.length > 5 ? this.props.results.slice(0, 5) : this.props.results} />

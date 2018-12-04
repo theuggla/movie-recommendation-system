@@ -21,12 +21,15 @@ class PageDB:
       return id
   
   # Returns a list of all pages that has all of the given words in them
-  def search(self, words):
+  def search(self, words, inclusive):
     result_lists = [(filter(lambda page: self.get_id_for_word(word) in page.words, self.pages)) for word in words]
-    results = set(result_lists.pop())
-    
-    for result in result_lists:
-      results = results.intersection(set(result))
+
+    if inclusive:
+      results = set(result_lists[0]).union(*result_lists[1:])
+    else:
+      results = set(result_lists.pop())
+      for result in result_lists:
+        results = results.intersection(set(result))
 
     return list(results)
 

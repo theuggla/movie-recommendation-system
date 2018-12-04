@@ -26,10 +26,12 @@ pageDB.calculate_page_rank(20)
 
 # Search for a single word in the list
 class Search(Resource):
-    def get(self, rank_type):
+    def get(self, rank_type, inclusive = False):
+        print inclusive
         query = [word.lower() for word in request.query_string.split('+')]
-        print query
-        results = pageDB.search(query)
+        results = pageDB.search(query, inclusive)
+
+        print len(results)
 
         if len(results) == 0:
             return (jsonify([]))
@@ -47,7 +49,7 @@ class Search(Resource):
             return (jsonify(ranked_results))
 
 # Add resources
-api.add_resource(Search, '/search/<rank_type>') # Route_1
+api.add_resource(Search, '/search/<rank_type>/<inclusive>', '/search/<rank_type>/') # Route_1
 
 
 # Start server

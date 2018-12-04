@@ -67,10 +67,11 @@ export class SearchContainer extends React.Component {
   /**
    * Retrieves result for the search term.
    */
-  getSearchResults (rank, terms) {
+  getSearchResults (rank, terms, inclusive) {
     let query = terms.replace(' ', '+')
+
     return new Promise((resolve, reject) => {
-      axios.get('http://127.0.0.1:5002/search/' + rank + '?' + query)
+      axios.get('http://127.0.0.1:5002/search/' + rank + (inclusive ? '/inclusive' : '') + '?' + query)
       .then((result) => {
         resolve(result)
       })
