@@ -27,7 +27,8 @@ pageDB.calculate_page_rank(20)
 # Search for a single word in the list
 class Search(Resource):
     def get(self, rank_type):
-        query = request.query_string.split('+')
+        query = [word.lower() for word in request.query_string.split('+')]
+        print query
         results = pageDB.search(query)
 
         if len(results) == 0:
