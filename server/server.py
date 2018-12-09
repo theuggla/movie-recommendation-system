@@ -27,11 +27,8 @@ pageDB.calculate_page_rank(20)
 # Search for a single word in the list
 class Search(Resource):
     def get(self, rank_type, inclusive = False):
-        print inclusive
         query = [word.lower() for word in request.query_string.split('+')]
         results = pageDB.search(query, inclusive)
-
-        print len(results)
 
         if len(results) == 0:
             return (jsonify([]))
@@ -39,11 +36,11 @@ class Search(Resource):
             metrics_to_use = []
             
             if 'wfm' in rank_type:
-                metrics_to_use.append({'metric_function': metrics.get_word_frequency_score, 'weight': 1.0, 'type': 'content'})
+                metrics_to_use.append({'metric_function': metrics.get_word_frequency_score, 'weight': 1.0, 'type': 'content', 'name': 'content'})
             if 'dlm' in rank_type:
-                metrics_to_use.append({'metric_function': metrics.get_document_location_score, 'weight': 0.8, 'type': 'content', 'prefer_low': True})
+                metrics_to_use.append({'metric_function': metrics.get_document_location_score, 'weight': 0.8, 'type': 'content', 'name': 'location', 'prefer_low': True})
             if 'prm' in rank_type:
-                metrics_to_use.append({'metric_function': metrics.get_page_rank_score, 'weight': 0.5, 'type': 'link'})
+                metrics_to_use.append({'metric_function': metrics.get_page_rank_score, 'weight': 0.5, 'type': 'link', 'name': 'pagerank'})
             
             ranked_results = metrics.rank(results, query, metrics_to_use)
             return (jsonify(ranked_results))

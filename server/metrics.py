@@ -23,13 +23,19 @@ class Metrics:
         scores[m_idx][p_idx] = score
 
     for m_idx, metric in enumerate(metrics):
-      scores[m_idx] = self.normalize(scores[m_idx], metric.get('prefer_low'))
+        scores[m_idx] = Metrics.normalize(scores[m_idx], metric.get('prefer_low'))
 
     for p_idx, page in enumerate(pages):
+      page_result = {'url': page.url}
       score = 0
+      
       for m_idx, metric in enumerate(metrics):
-        score += (scores[m_idx][p_idx] * metric['weight'])
-      result.append({'url': page.url, 'score': score})
+        metric_score = scores[m_idx][p_idx] * metric['weight']
+        page_result[metric['name']] = metric_score
+        score += metric_score
+      
+      page_result['score'] = score
+      result.append(page_result)
 
     result = sorted(result, key = lambda item: item['score'], reverse = True)
 
@@ -49,7 +55,7 @@ class Metrics:
 
   # Returns the document location score for the given page and query
   def get_document_location_score(self, page, query):
-    score = 0
+    score = 1
 
     for part in query:
       word_id = self.db.get_id_for_word(part)
@@ -62,7 +68,7 @@ class Metrics:
             break
       
       if word_found == False:
-        score += 100000
+        score += 99999
 
     return float(score)
 
@@ -72,7 +78,8 @@ class Metrics:
     return float(score)
 
   # Normalizes a list of scores so that the highest score becomes 1 and the rest are transformed to reflect that
-  def normalize(self, scores, low_is_better = False):
+  @staticmethod
+  def normalize(scores, low_is_better = False):
     if len(scores) == 0:
       return scores
 

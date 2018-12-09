@@ -1,5 +1,8 @@
 # Classes to handle page functionality
 
+# Imports
+from metrics import Metrics
+
 class PageDB:
 
   def __init__(self):
@@ -38,13 +41,12 @@ class PageDB:
     for i in range(iterations):
       print 'PageRank calculation: iteration ' + str(i)
       for page in self.pages:
-        rank = 0
+        rank = 0.0
         for other_page in self.pages:
           if page.url != other_page.url:
             if page.url in other_page.links:
-              rank += other_page.page_rank / len(other_page.links)
-
-        page.page_rank = (rank * 0.85) + 0.15
+              rank += other_page.page_rank / float(len(other_page.links))
+              page.page_rank = rank * 0.85 + 0.15
 
 class Page:
   
@@ -52,4 +54,4 @@ class Page:
     self.url = url
     self.words = words_as_ids
     self.links = links
-    self.page_rank = 1.0
+    self.page_rank = 0.5
