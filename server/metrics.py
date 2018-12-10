@@ -23,10 +23,13 @@ class Metrics:
         scores[m_idx][p_idx] = score
 
     for m_idx, metric in enumerate(metrics):
+      if metric['type'] == 'content':
         scores[m_idx] = Metrics.normalize(scores[m_idx], metric.get('prefer_low'))
-
+      else:
+        scores[m_idx] = Metrics.normalize(dict([(idx, page.page_rank) for (idx, page) in enumerate(self.db.pages)]))
+    
     for p_idx, page in enumerate(pages):
-      page_result = {'url': page.url}
+      page_result = {'url': page.url, 'i': p_idx}
       score = 0
       
       for m_idx, metric in enumerate(metrics):

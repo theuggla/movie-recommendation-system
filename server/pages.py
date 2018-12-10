@@ -46,7 +46,7 @@ class PageDB:
           if page.url != other_page.url:
             if page.url in other_page.links:
               rank += other_page.page_rank / float(len(other_page.links))
-              page.page_rank = rank * 0.85 + 0.15
+          page.page_rank = rank * 0.85 + 0.15
 
 class Page:
   
@@ -54,4 +54,4 @@ class Page:
     self.url = url
     self.words = words_as_ids
     self.links = links
-    self.page_rank = 0.5
+    self.page_rank = 1.0
