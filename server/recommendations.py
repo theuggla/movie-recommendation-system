@@ -16,9 +16,6 @@ class Recommendations:
         continue
 
       sim = similarity(person, other)
-
-      if sim <= 0:
-        continue
       
       other_ratings = self.db.get_ratings_for(other)
       person_ratings =self.db.get_ratings_for(person)
