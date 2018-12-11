@@ -12,9 +12,9 @@ export class ErrorPage extends React.Component {
    **/
   render () {
     return (
-      <div className='users'>
-        <h1 className='users__header users__header--error'>404 Not Found</h1>
-        <p className='users__text'>Tyvärr, sidan du sökte verkar inte finnas.</p>
+      <div className='error'>
+        <h1 className='error__header'>404 Not Found</h1>
+        <p className='error__text'>Tyvärr, sidan du sökte verkar inte finnas.</p>
       </div>
     )
   }

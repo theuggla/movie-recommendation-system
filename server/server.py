@@ -1,58 +1,57 @@
 # Server starting point
 
 # Flask imports
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 from flask_restful import Resource, Api
 from json import dumps
 from flask_jsonpify import jsonify
 from flask_cors import CORS
 
 # Local imports
-from db import DB
-from similarities import Similarities
-from recommendations import Recommendations
+from utils import Util
+from kmeans_clustering import KMeansCluster
+from hierarchical_clustering import HierchCluster
+from print_jpg import Print
 
 # Global definitions
-db_path = 'db/movies.db'
-app = Flask(__name__)
+app = Flask(__name__, static_url_path = '/server')
 api = Api(app)
-db = DB(db_path)
-sims = Similarities(db)
-recs = Recommendations(db)
-
 CORS(app)
 
-# Get the users
-class Users(Resource):
+# Get the clusters - k-means
+class KMeansClusters(Resource):
+    def get(self, iterations):
+        filename = './blogdata.txt'
+        data = Util.readfile(filename)
+
+        try:
+            number_of_iterations = int(iterations)
+        except ValueError:
+            number_of_iterations = False
+        finally:
+            clusters = KMeansCluster.run_assignments(data, 5, number_of_iterations)
+            return jsonify([[assignment['blog'] for assignment in cluster.assignments] for cluster in clusters])
+
+# Get the clusters - hierarchical
+class HierchClusters(Resource):
     def get(self):
-        composed_users = []
-        users = db.get_all_users()
-        
-        for user in users:
-            user['Ratings'] = db.get_ratings_for(user['UserID'])
-            composed_users.append(user)
-            
-        result = composed_users
-        return jsonify(result)
+        filename = './blogdata.txt'
+        data = Util.readfile(filename)
 
-# Get the top matching users for the given user
-class Matches(Resource):
-    def get(self, similarity_measure, user_id):
-        similarity = sims.pearson if (similarity_measure == 'pearson') else sims.euclidean
-        result = sims.topMatches(user_id, similarity)
-        return jsonify(result)
+        cluster = HierchCluster.cluster(data)
+        image_link = Print.draw_dendrogram(cluster, "cluster.jpg")
 
-# Get movie recommendations for the given user
-class Recs(Resource):
-    def get(self, similarity_measure, user_id):
-        similarity = sims.pearson if (similarity_measure == 'pearson') else sims.euclidean
-        result = recs.getRecommendations(user_id, similarity)
-        return jsonify(result)
+        return jsonify("http://localhost:5002/" + image_link)
+
+# Static image host
+class ServeStatic(Resource):
+    def get(self, path):
+        return send_from_directory('img', path)
 
 # Add resources
-api.add_resource(Matches, '/matches/<similarity_measure>/<user_id>') # Route_1
-api.add_resource(Recs, '/recommendations/<similarity_measure>/<user_id>') # Route_2
-api.add_resource(Users, '/users') # Route_3
+api.add_resource(KMeansClusters, '/clusters/kmeans/<iterations>') # Route_1
+api.add_resource(HierchClusters, '/clusters/hierarchical/') # Route_2
+api.add_resource(ServeStatic, '/img/<path>') # Route_3
 
 
 # Start server

@@ -1,1 +1,1 @@
-Programming exercise for creating a small REST-service with a movie recommendation algorithm in Python.
+Programming exercise for creating a small REST-service with a blog post clustering algorithm in Python. 
