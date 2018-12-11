@@ -1,0 +1,12 @@
+# Compiled 
+static
+
+# Dependency directories
+node_modules/
+
+# dotenv environment variables file
+.env
+
+# python
+*.pyc
+venv/
