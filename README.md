@@ -1,4 +1,8 @@
+# Adventures in Python
+
 See different branches for different small web intelligence projects in python.
+
+### Branches
 
 **blog-post-clustering:** Programming exercise for creating a small REST-service with a blog post clustering algorithm in Python, with a React client.
 
