@@ -17,12 +17,16 @@ class Data:
     else:
       self.heading_rows = 0
 
-  # Loads the data from the file
+  # Loads the data from the file separated into training and test batches
   def load_data(self):
     training_data = self.get_training_data()
     test_data = self.get_test_data()
 
     return training_data, test_data
+
+  # Loads all the data from the file
+  def load_data_full(self):
+    return self.get_all_data()
 
   # Retrieves 90% of the data from the file
   def get_training_data(self):
@@ -43,3 +47,10 @@ class Data:
     test_values = numpy.array(target_values[0::10])
 
     return test_data, test_values
+
+  # Retrieves all the data from the file
+  def get_all_data(self):
+    data = numpy.loadtxt(self.path_to_file, delimiter=self.delimeter, usecols=self.x_cols, skiprows=self.heading_rows)
+    values = numpy.loadtxt(self.path_to_file, delimiter=self.delimeter, usecols=self.y_cols, skiprows=self.heading_rows)
+
+    return data, values

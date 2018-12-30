@@ -6,6 +6,7 @@ from classifiers.scikit_linear import SciKitLinear
 from classifiers.scikit_nn import SciKitNN
 from keras.datasets import mnist
 from data import Data
+from graph import Graph
 
 # Global variables
 data = Data('./data/spiral/spiral.csv')
@@ -13,6 +14,7 @@ data = Data('./data/spiral/spiral.csv')
 # Load data
 (mnist_x_train, mnist_y_train), (mnist_x_test, mnist_y_test) = mnist.load_data()
 (spiral_x_train, spiral_y_train), (spiral_x_test, spiral_y_test) = data.load_data()
+(spiral_data), (spiral_values) = data.load_data_full()
 
 # Build and compile networks
 k_linear_model = KerasLinear(mnist_x_train, mnist_y_train, mnist_x_test, mnist_y_test, epochs=15)
@@ -43,6 +45,11 @@ sci_nn_time_start = time.time()
 sci_nn_model.train()
 sci_nn_time = time.time() - sci_nn_time_start
 
+# Save models
+sci_linear_model.save('scikit_linear')
+sci_nn_model.save('scikit_nn')
+k_linear_model.save('keras_linear')
+k_convnet_model.save('keras_convnet')
 
 # Print metrics
 k_linear_loss, k_linear_accuracy = k_linear_model.evaluate()
@@ -86,9 +93,5 @@ print("ConvNet Time   " + str(cnn_time))
 
 print("\n\n---------KERAS-MNIST----------\n\n")
 
-
-# Save models
-sci_linear_model.save('scikit_linear')
-sci_nn_model.save('scikit_nn')
-k_linear_model.save('keras_linear')
-k_convnet_model.save('keras_convnet')
+# Print graphs
+Graph.scatterplot(spiral_data, spiral_values)
