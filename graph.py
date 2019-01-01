@@ -66,6 +66,13 @@ class Graph:
     linear_epochs = len(linear_history.epoch)
     conv_net_epochs = len(nn_history.epoch)
 
+    colors = {
+      'categorical_accuracy' : ('indianred', 'darkred'),
+      'val_categorical_accuracy': ('sandybrown', 'peru'),
+      'loss': ('darkcyan', 'darkturquoise'),
+      'val_loss': ('lightslategray', 'lightsteelblue')
+    }
+
     # Accuracy subplot
     plt.subplot(2, 1, 1)
     plt.title('Model Accuracy')
@@ -75,16 +82,15 @@ class Graph:
     tick_marks = np.arange(max(conv_net_epochs, linear_epochs))
     plt.xticks(tick_marks, range(1, max(conv_net_epochs, linear_epochs) + 1))
 
-    cmap = plt.cm.get_cmap('Set3')
+    lines = list()
 
     for index, key in enumerate(linear_history.history):
       if key.find('accuracy') != -1:
-        c = cmap(float(index)/(10-1))
-        c2 = cmap(float(index * 2)/(10-1))
-        plt.plot(linear_history.history[key], label='Linear ' + ('Test' if 'val' in key else 'Training') + ' Accuracy', color = c)
-        plt.plot(nn_history.history[key], label='ConvNet ' + ('Test' if 'val' in key else 'Training') + ' Accuracy', color = c2)
+        lines.append(plt.plot(linear_history.history[key], label='Linear ' + ('Test' if 'val' in key else 'Training') + ' Accuracy', color=colors[key][0]))
+        lines.append(plt.plot(nn_history.history[key], label='ConvNet ' + ('Test' if 'val' in key else 'Training') + ' Accuracy', color=colors[key][1]))
 
-    plt.legend()
+    sorted_lines = sorted([line[0] for line in lines], key = lambda item: item.get_label())
+    plt.legend(sorted_lines, [line.get_label() for line in sorted_lines])
 
     # Loss subplot
     plt.subplot(2, 1, 2)
@@ -95,16 +101,15 @@ class Graph:
     tick_marks = np.arange(max(conv_net_epochs, linear_epochs))
     plt.xticks(tick_marks, range(1, max(conv_net_epochs, linear_epochs) + 1))
 
-    cmap = plt.cm.get_cmap('Accent')
+    lines = list()
     
     for index, key in enumerate(linear_history.history):
       if key.find('loss') != -1:
-        c = cmap(float(index)/(10-1))
-        c2 = cmap(float(index * 2)/(10-1))
-        plt.plot(linear_history.history[key], label='Linear ' + ('Test' if 'val' in key else 'Training') + ' Loss', color = c)
-        plt.plot(nn_history.history[key], label='ConvNet ' + ('Test' if 'val' in key else 'Training') + ' Loss', color = c2)
+        lines.append(plt.plot(linear_history.history[key], label='Linear ' + ('Test' if 'val' in key else 'Training') + ' Loss', color=colors[key][0]))
+        lines.append(plt.plot(nn_history.history[key], label='ConvNet ' + ('Test' if 'val' in key else 'Training') + ' Loss', color=colors[key][1]))
 
-    plt.legend()
+    sorted_lines = sorted([line[0] for line in lines], key = lambda item: item.get_label())
+    plt.legend(sorted_lines, [line.get_label() for line in sorted_lines])
 
     plt.tight_layout()
 

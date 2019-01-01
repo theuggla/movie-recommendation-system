@@ -23,9 +23,9 @@ class SciKitClassifier(Classifier):
   # Trains the model
   def train(self):
     self.model.fit(self.x_train, self.y_train)
+    self.history = self.model.predict(self.x_test)
 
   # Evaluates the model
   def evaluate(self):
-    self.history = self.model.predict(self.x_test)
     accuracy = self.model.score(self.x_test, self.y_test)
     return accuracy
