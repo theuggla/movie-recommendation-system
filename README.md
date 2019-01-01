@@ -1,13 +1,29 @@
-# Adventures in Python
+# Machine Learning
 
-See different branches for different small web intelligence projects in python.
+Classifying a spiral data set using a Linear and a Neural Network classifier using the Sciki-learn framework.
+Using matplotlib to plot the data and the result as a confustíon matrix.
 
-### Branches
 
-**blog-post-clustering:** Programming exercise for creating a small REST-service with a blog post clustering algorithm in Python, with a React client.
+Classifying the MNIST hand written digits data set using Keras, using both a Linear and a Convolutional Neural Network classifier.
+Using matplotlib to plot the results over epochs trained.
 
-**movie-recommendation-system:** Programming exercise for creating a small REST-service with a movie recommendation algorithm in Python, with a React client.
+## Scikit
 
-**search-engine:** Programming exercise for creating a small REST-service with a search engine for searching Wikipedia articles in Python, with a React client.
+### Comparison: Linear classifier vs Neural Network classifier
 
-**wikipedia-clustering:** Programming exercise for creating a small REST-service that clusters wikipedia articles, as well as using an algoritm to determine the best set of words to separate articles into two branches concerning different subjects, written in Python with a React client.
+### Comparison: Accuracy Metric vs Confusion Matrix
+
+## Keras
+
+### Linear/ConvNet MNIST Classifer
+#### Linear Time for 15 epochs
+**Test Accuracy** 0.9506  
+**Test Loss** 0.1692  
+**Linear Time** 86.6515 s  
+
+#### ConvNet Time for 10 epochs
+**Test Accuracy** 0.9942  
+**Test Loss** 0.0197  
+**CNN Time** 375.9757 s  
+
+
