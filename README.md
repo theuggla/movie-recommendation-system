@@ -16,14 +16,14 @@ Using matplotlib to plot the results over epochs trained.
 ## Keras
 
 ### Linear/ConvNet MNIST Classifer
-#### Linear Time for 15 epochs
+#### Linear (15 epochs)
 **Test Accuracy** 0.9506  
 **Test Loss** 0.1692  
 **Linear Time** 86.6515 s  
 
-#### ConvNet Time for 10 epochs
+#### ConvNet (10 epochs)
 **Test Accuracy** 0.9942  
 **Test Loss** 0.0197  
-**CNN Time** 375.9757 s  
+**ConvNet Time** 375.9757 s  
 
 
