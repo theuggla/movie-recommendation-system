@@ -2,4 +2,4 @@
 venv
 *.pyc
 test.py
-data/models/
+data/models/*
