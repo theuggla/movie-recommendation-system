@@ -1,6 +1,5 @@
 # Imports
 from sklearn.metrics import confusion_matrix
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 import itertools
 import numpy as np
@@ -31,8 +30,6 @@ class Graph:
     
     plt.tight_layout()
     return plt.figure(num=title)
-
-
 
   @staticmethod
   def confusion_matrix(y_test, y_pred, title):
@@ -89,7 +86,7 @@ class Graph:
 
     plt.legend()
 
-    # Accuracy subplot
+    # Loss subplot
     plt.subplot(2, 1, 2)
     plt.title('Model Loss')
     plt.ylabel('Loss')
