@@ -92,7 +92,7 @@ class Graph:
     # Accuracy subplot
     plt.subplot(2, 1, 2)
     plt.title('Model Loss')
-    plt.ylabel('Accuracy')
+    plt.ylabel('Loss')
     plt.xlabel('Epoch')
 
     tick_marks = np.arange(max(conv_net_epochs, linear_epochs))
