@@ -1,6 +1,5 @@
 # Imports
 from abc import ABCMeta, abstractmethod
-from joblib import dump, load
 
 # Base class for the classifiers
 class Classifier(object):
@@ -42,9 +41,11 @@ class Classifier(object):
     pass
 
   # Saves the model
+  @abstractmethod
   def save(self, name):
-    dump(self.model, './data/models/' + name + '.joblib')
+    pass
 
   # Loads the model
+  @abstractmethod
   def load(self, name):
-    self.model = load('./data/models/' + name + '.joblib')
+    pass

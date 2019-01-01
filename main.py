@@ -94,4 +94,9 @@ print("ConvNet Time   " + str(cnn_time))
 print("\n\n---------KERAS-MNIST----------\n\n")
 
 # Print graphs
-Graph.scatterplot(spiral_data, spiral_values)
+scatterplot = Graph.scatterplot(spiral_data, spiral_values, "Spiral Data Scatterplot")
+linear_cm = Graph.confusion_matrix(spiral_y_test, sci_linear_model.history, "Scikit Linear Confusion Matrix")
+nn_cm = Graph.confusion_matrix(spiral_y_test, sci_nn_model.history, "Scikit Neural Network Confusion Matrix")
+keras_plot = Graph.plot_keras(k_linear_model.history, k_convnet_model.history, "Keras Plot")
+
+Graph.show([scatterplot, linear_cm, nn_cm, keras_plot])

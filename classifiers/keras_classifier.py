@@ -1,6 +1,8 @@
 # Imports
 from keras.utils import np_utils
+from keras.models import load_model
 from classifier import Classifier
+import pickle
 
 class KerasClassifier(Classifier):
 
@@ -28,3 +30,17 @@ class KerasClassifier(Classifier):
     def evaluate(self):
       self.evaluation = self.model.evaluate(self.x_test, self.y_test)
       return self.evaluation
+
+    # Saves the model
+    def save(self, name):
+      self.model.save('./data/models/' + name + '.h5')
+
+      with open('./data/models/' + name + '-history', 'wb') as file:
+        pickle.dump(self.history, file)
+
+    # Loads the model
+    def load(self, name):
+      self.model = load_model('./data/models/' + name + '.h5')
+
+      with open('./data/models/' + name + '-history') as file:
+        self.history = pickle.load(file)
