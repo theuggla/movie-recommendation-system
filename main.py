@@ -6,10 +6,7 @@ from classifiers.scikit_linear import SciKitLinear
 from classifiers.scikit_nn import SciKitNN
 from keras.datasets import mnist
 from data import Data
-<<<<<<< HEAD
 from graph import Graph
-=======
->>>>>>> f63c042addf49486dc02dd6108940e07cf1d206e
 
 # Global variables
 data = Data('./data/spiral/spiral.csv')
@@ -17,10 +14,7 @@ data = Data('./data/spiral/spiral.csv')
 # Load data
 (mnist_x_train, mnist_y_train), (mnist_x_test, mnist_y_test) = mnist.load_data()
 (spiral_x_train, spiral_y_train), (spiral_x_test, spiral_y_test) = data.load_data()
-<<<<<<< HEAD
 (spiral_data), (spiral_values) = data.load_data_full()
-=======
->>>>>>> f63c042addf49486dc02dd6108940e07cf1d206e
 
 # Build and compile networks
 k_linear_model = KerasLinear(mnist_x_train, mnist_y_train, mnist_x_test, mnist_y_test, epochs=15)

@@ -9,9 +9,9 @@ Using matplotlib to plot the results over epochs trained.
 
 ## Scikit
 
-### Comparison: Linear classifier vs Neural Network classifier
-
-### Comparison: Accuracy Metric vs Confusion Matrix
+![](imgs/scatterplot.png)
+![](imgs/linear-cm.png)
+![](imgs/nn-cm.png)
 
 ## Keras
 
@@ -24,6 +24,8 @@ Using matplotlib to plot the results over epochs trained.
 #### ConvNet (10 epochs)
 **Test Accuracy** 0.9942  
 **Test Loss** 0.0197  
-**ConvNet Time** 375.9757 s  
+**ConvNet Time** 375.9757 s 
+
+![](imgs/learning-curve.png)
 
 
